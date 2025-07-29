@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/API/Sql/countries_insert.sql" dialect="TSQL" />
-    <file url="file://$PROJECT_DIR$/API/Sql/uni_db_create_v0.sql" dialect="TSQL" />
-    <file url="file://$PROJECT_DIR$/API/Sql/uni_db_drop_dynamic_v0.sql" dialect="TSQL" />
-    <file url="file://$PROJECT_DIR$/API/Sql/uni_db_drop_v0.sql" dialect="TSQL" />
-  </component>
-</project>
