@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
+using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Middlewares;
 
@@ -21,14 +23,16 @@ public class AuthMiddleware
             var authHeader = AuthenticationHeaderValue.Parse(context.Request.Headers["Authorization"]);
 
             if (authHeader.Scheme.Equals("basic", StringComparison.OrdinalIgnoreCase) && authHeader.Parameter != null)
-            { 
+            {
+                var dbContext = context.RequestServices.GetRequiredService<UniversityContext>();
+                
                 var credentials = Encoding.UTF8.GetString(
                     Convert.FromBase64String(authHeader.Parameter)
                     ).Split(":");
                 var username = credentials[0];
                 var password = credentials[1];
 
-                if (IsAuthorized(username, password))
+                if (await IsAuthorized(username, password, dbContext))
                 {
                     await _next(context);
                     return; 
@@ -40,9 +44,22 @@ public class AuthMiddleware
         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
     }
 
-    public bool IsAuthorized(string username, string password)
+    private async Task<bool> IsAuthorized(string username, string password, UniversityContext dbContext)
     {
-        return username == "admin" && password == "password";
+        if (username == "admin" && password == "password")
+        {
+            return true;
+        }
+        
+        // TODO: hashing and salt (in the db too)
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+        if (user is null)
+        {
+            return false;
+        }
+        
+        return username == user.Username && password == user.HashedPassword;
     }
     
 }

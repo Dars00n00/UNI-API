@@ -21,7 +21,9 @@ public partial class Person
 
     public int IdCorrespondenceAddress { get; set; }
 
-    public int IdPernamentAddress { get; set; }
+    public int IdPermanentAddress { get; set; }
+
+    public int IdUser { get; set; }
 
     public virtual Clerk? Clerk { get; set; }
 
@@ -29,7 +31,9 @@ public partial class Person
 
     public virtual Country IdNationalityNavigation { get; set; } = null!;
 
-    public virtual Address IdPernamentAddressNavigation { get; set; } = null!;
+    public virtual Address IdPermanentAddressNavigation { get; set; } = null!;
+
+    public virtual User IdUserNavigation { get; set; } = null!;
 
     public virtual Lecturer? Lecturer { get; set; }
 

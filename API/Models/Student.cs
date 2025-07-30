@@ -7,7 +7,7 @@ public partial class Student
 {
     public int IdStudent { get; set; }
 
-    public DateOnly EnrollementDate { get; set; }
+    public DateOnly EnrollmentDate { get; set; }
 
     public DateOnly? GraduationDate { get; set; }
 

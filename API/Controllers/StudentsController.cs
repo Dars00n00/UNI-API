@@ -1,4 +1,5 @@
-﻿using API.DTOs.Students;
+﻿using API.DTOs;
+using API.DTOs.Students;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,40 +15,52 @@ public class StudentsController : ControllerBase
     {
         _studentsService = studentsService;
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> PostNewStudentAsync([FromBody] NewStudentDto newStudentDto, CancellationToken cancellationToken)
+    {
+        await _studentsService.CreateStudentAsync(newStudentDto, cancellationToken);
+
+        return Created();
+    }
+
+    [HttpPost]
+    [Route("{studentId}/Grades/{CourseId}")]
+    public async Task<IActionResult> PostNewStudentGradeComponentAsync([FromRoute] int studentId, [FromRoute] int courseId, 
+        [FromBody] NewComponentGradeDto newComponentGradeDto, 
+        CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllStudentsAsync()
+    public async Task<IActionResult> GetAllStudentsWithTheirGradesAsync(CancellationToken cancellationToken)
     {
-        return Ok(" ");
+        var result = await _studentsService
+            .GetAllStudentsWithGradesAsync(cancellationToken);
+
+        return Ok(result);
     }
 
     [HttpGet]
     [Route("{studentId}")]
-    public Task<IActionResult> GetStudentByIdAsync([FromRoute] int studentId)
+    public async Task<IActionResult> GetStudentWithGradesByFilterAsync([FromRoute] int studentId)
     {
         throw new NotImplementedException();
     }
 
     [HttpGet]
     [Route("{studentId}/grades")]
-    public Task<IActionResult> GetStudentGradesAsync([FromRoute] int studentId)
+    public async Task<IActionResult> GetStudentGradesAsync([FromRoute] int studentId)
     {
         throw new NotImplementedException();
     }
 
     [HttpGet]
     [Route("{id}/grades/{courseId}")]
-    public Task<IActionResult> GetStudentGradesByCourseId([FromRoute] int studentId, [FromRoute] int courseId)
+    public async Task<IActionResult> GetStudentGradesByCourseId([FromRoute] int studentId, [FromRoute] int courseId)
     {
         throw new NotImplementedException();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> PostNewStudentAsync([FromBody] NewStudentDto newStudentDto, CancellationToken cancellationToken)
-    {
-        var result = await _studentsService.CreateStudentAsync(newStudentDto, cancellationToken);
-
-        return Created();
     }
     
 }

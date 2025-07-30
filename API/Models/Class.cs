@@ -15,6 +15,8 @@ public partial class Class
 
     public int IdRoom { get; set; }
 
+    public DateTime BeginTime { get; set; }
+
     public int DurationMinutes { get; set; }
 
     public virtual Course IdCourseNavigation { get; set; } = null!;

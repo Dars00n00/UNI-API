@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using API.Exceptions;
 
 namespace API.Middlewares;
 
@@ -29,14 +30,36 @@ public class GlobalExceptionHandlingMiddleware
     public static async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
     {
         httpContext.Response.ContentType = "application/json";
-        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
+        var httpResponse = httpContext.Response;
+        
+        var statusCode = StatusCodes.Status500InternalServerError;
+        var errorMessage = "An unexpected error occured";
+        
+        switch (exception)
+        {
+            case CountryNotFoundException cnfEx:
+                statusCode = StatusCodes.Status404NotFound;
+                errorMessage = cnfEx.Message;
+                break;
+            
+            default:
+                errorMessage = exception.Message;
+                break;
+        }
+
+        var formattedStackTrace = exception.StackTrace?
+            .Split("\n")
+            .Select(line => line.Trim())
+            .Where(line => !string.IsNullOrWhiteSpace(line))
+            .ToList();
+        
         var serverResponse = new
         {
             status = "error",
-            message = "An unexpected error occurred",
-            details = exception.Message,
-            stackTrace = exception.StackTrace
+            code = statusCode,
+            message = errorMessage,
+            stackTrace = formattedStackTrace
         };
 
         var options = new JsonSerializerOptions
@@ -45,7 +68,7 @@ public class GlobalExceptionHandlingMiddleware
         };
         var json = JsonSerializer.Serialize(serverResponse, options);
         
-        await httpContext.Response.WriteAsync(json);
+        await httpResponse.WriteAsync(json);
     }
     
 }

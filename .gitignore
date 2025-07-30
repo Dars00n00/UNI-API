@@ -408,3 +408,5 @@ FodyWeavers.xsd
 
 API/bin/
 API/obj/
+
+.idea/

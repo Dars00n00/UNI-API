@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs;
 
+[DisplayName("Person")]
 public class PersonDto
 {
-    
     [Required] [MaxLength(255)]
     public string FirstName { get; set; }
     
@@ -21,13 +22,12 @@ public class PersonDto
     [Required]
     public DateOnly Birthdate { get; set; }
     
-    [Required, MaxLength(100)]
-    public string Nationality { get; set; }
+    [Required]
+    public int IdNationality { get; set; }
     
     [Required]
     public AddressDto CorrespondenceAddress { get; set; }
     
     [Required]
     public AddressDto PermanentAddress { get; set; }
-
 }

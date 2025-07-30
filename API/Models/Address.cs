@@ -23,5 +23,5 @@ public partial class Address
 
     public virtual ICollection<Person> PersonIdCorrespondenceAddressNavigations { get; set; } = new List<Person>();
 
-    public virtual ICollection<Person> PersonIdPernamentAddressNavigations { get; set; } = new List<Person>();
+    public virtual ICollection<Person> PersonIdPermanentAddressNavigations { get; set; } = new List<Person>();
 }

@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs;
 
+[DisplayName("Address")]
 public class AddressDto
 {
     [Required, MaxLength(100)]
@@ -20,6 +22,6 @@ public class AddressDto
     [Required, MaxLength(100)]
     public string CityName { get; set; }
 
-    [Required, MaxLength(100)] 
-    public string CountryName { get; set; }
+    [Required] 
+    public int IdCountry { get; set; }
 }
